@@ -1,0 +1,3 @@
+[submodule "Twitter"]
+	path = Twitter
+	url = https://doubleasoft.visualstudio.com/DefaultCollection/_git/Twitter%20Rest%20Wrapper

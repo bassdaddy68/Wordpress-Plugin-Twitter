@@ -1,0 +1,16 @@
+
+$small_text : 0.5em;
+$medium_text : 0.85em;
+
+.doubleasoft-tweet-header{
+  font-size: $small_text;
+}
+
+.doubleasoft-tweets{
+  border: 1px #eee solid;
+  padding: 3px;
+}
+
+.doubleasoft-tweet-text{
+  font-size: $medium_text;
+}
