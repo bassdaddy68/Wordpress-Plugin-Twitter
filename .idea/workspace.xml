@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c574bdd0-d71a-4de6-bbc5-5491f0d166be" name="Default" comment="Fix for sql error when pulling through" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="doubleasoft@172.17.0.2" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+    <PATH>
+      <PATH_ELEMENT>
+        <option name="myItemId" />
+        <option name="myItemType" value="com.intellij.database.view.DatabaseStructure$Root" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="doubleasoft@172.17.0.2" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+      <PATH_ELEMENT>
+        <option name="myItemId" value="doubleasoft" />
+        <option name="myItemType" value="com.intellij.database.view.DbNodeDescriptor" />
+      </PATH_ELEMENT>
+    </PATH>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="DoubleA Twitter Feed" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>contact</find>
+      <find>feed_last</find>
+      <find>doublea_twitter_data</find>
+    </findStrings>
+  </component>
+  <component name="FrameworkCommandLineHistory">
+    <commandsHistory>
+      <command text="ls" />
+      <command text="ls -l" />
+    </commandsHistory>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Alan Hawes &lt;alan@doublea-software-services.co.uk&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--follow-tags" />
+        <option name="title" value="Current Branch" />
+      </GitPushTagMode>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="dbtable:/306c66c2/3e249269-2521-442d-982f-aa2cce1c6185/doubleasoft.wp_options" />
+        <option value="$PROJECT_DIR$/css/default.css" />
+        <option value="$PROJECT_DIR$/Twitter/Twitter.php" />
+        <option value="$PROJECT_DIR$/css/default.scss" />
+        <option value="$PROJECT_DIR$/uninstall.php" />
+        <option value="$PROJECT_DIR$/docker-compose.yml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/scripts/dblatw_admin_js.js" />
+        <option value="$PROJECT_DIR$/header.php" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/DoubleATwitterFeedWidget.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpServers">
+    <servers />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="Remote PHP 5.6">
+    <include_path>
+      <path value="$PROJECT_DIR$/../../DoubleA Software Site" />
+    </include_path>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="width" value="1920" />
+    <option name="height" value="1046" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="DoubleATwitterFeed" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DoubleATwitterFeed" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="add_unversioned_files" value="true" />
+    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
+    <property name="full.screen.before.presentation.mode" value="false" />
+    <property name="js-jscs-nodeInterpreter" value="/usr/bin/node" />
+    <property name="js.eslint.eslintPackage" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_interpreter_path" value="/usr/bin/node" />
+    <property name="prop_add_unversioned_files" value="true" />
+    <property name="settings.editor.selected.configurable" value="RemoteServers" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/css" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c574bdd0-d71a-4de6-bbc5-5491f0d166be" name="Default" comment="" />
+      <created>1483626269819</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1483626269819</updated>
+      <workItem from="1483626271235" duration="3008000" />
+      <workItem from="1483706668203" duration="8330000" />
+      <workItem from="1483752148374" duration="684000" />
+      <workItem from="1483874262038" duration="8088000" />
+      <workItem from="1483951381606" duration="9274000" />
+      <workItem from="1484035993472" duration="4579000" />
+      <workItem from="1484137924975" duration="8408000" />
+      <workItem from="1484146346874" duration="5715000" />
+      <workItem from="1484208757244" duration="3000" />
+      <workItem from="1484213178454" duration="10064000" />
+      <workItem from="1484295923808" duration="14605000" />
+      <workItem from="1484489238274" duration="990000" />
+      <workItem from="1484991068474" duration="210000" />
+      <workItem from="1484991408782" duration="2361000" />
+      <workItem from="1485126759600" duration="21000" />
+      <workItem from="1485169514590" duration="4585000" />
+      <workItem from="1485267043084" duration="1216000" />
+      <workItem from="1485354299666" duration="11310000" />
+      <workItem from="1485766523587" duration="681000" />
+      <workItem from="1485888776894" duration="610000" />
+      <workItem from="1485949378971" duration="2148000" />
+      <workItem from="1485967796318" duration="42000" />
+      <workItem from="1485967855146" duration="609000" />
+      <workItem from="1486037433896" duration="653000" />
+      <workItem from="1486141992507" duration="1888000" />
+      <workItem from="1486212841993" duration="2746000" />
+      <workItem from="1486230000209" duration="16000" />
+      <workItem from="1486370692564" duration="129000" />
+      <workItem from="1486370863643" duration="115000" />
+      <workItem from="1486370986216" duration="999000" />
+      <workItem from="1486561114052" duration="748000" />
+      <workItem from="1488401919980" duration="944000" />
+      <workItem from="1488791983436" duration="2395000" />
+      <workItem from="1488802360683" duration="3631000" />
+      <workItem from="1489058746021" duration="1307000" />
+      <workItem from="1489152183561" duration="800000" />
+      <workItem from="1489272746443" duration="21000" />
+      <workItem from="1489322454030" duration="11000" />
+      <workItem from="1489322477690" duration="1486000" />
+      <workItem from="1489328834176" duration="3977000" />
+      <workItem from="1489399659594" duration="787000" />
+      <workItem from="1489492661099" duration="888000" />
+      <workItem from="1489586728842" duration="117000" />
+      <workItem from="1489657811989" duration="825000" />
+      <workItem from="1490288007474" duration="1698000" />
+      <workItem from="1490347329510" duration="933000" />
+      <workItem from="1493396486850" duration="205000" />
+      <workItem from="1494429812923" duration="919000" />
+      <workItem from="1494516297601" duration="754000" />
+      <workItem from="1543437180778" duration="2670000" />
+    </task>
+    <task id="LOCAL-00036" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484305146853</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1484305146853</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484317385702</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1484317385702</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484317553001</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1484317553001</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484318149592</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1484318149592</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484318663047</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1484318663047</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484319024662</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1484319024662</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484323306595</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1484323306595</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Task #100 - Design front end display of tweets&#10;&#10;Extending twitter data fields captured">
+      <created>1484323492116</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1484323492116</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Task #100 - Design front end display of tweets&#10;&#10;Bringing in url for tweet">
+      <created>1484327507214</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1484327507214</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Task #100 - Design front end display of tweets&#10;&#10;Bringing in url for tweet">
+      <created>1484328603363</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1484328603363</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Task #100 - Design front end display of tweets&#10;&#10;Fixing Url issue">
+      <created>1484489606573</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1484489606573</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Product Backlog Item #98 - Create front end&#10;&#10;replace hash tags with url">
+      <created>1485170501118</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1485170501118</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Product Backlog Item #98 - Create front end&#10;&#10;replace hash tags with url">
+      <created>1485171850272</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1485171850272</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Product Backlog Item #98 - Create front end&#10;&#10;replace hash tags with url">
+      <created>1485186557198</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1485186557198</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Product Backlog Item #98 - Create front end&#10;&#10;Added twitter logo">
+      <created>1485186952541</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1485186952542</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Product Backlog Item #98 - Create front end&#10;&#10;Formatting improvements to timeline view">
+      <created>1485187954971</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1485187954971</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Packaging up plugin">
+      <created>1485267130435</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1485267130436</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485361549515</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1485361549515</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485362648867</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1485362648867</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485363300135</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1485363300135</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485364428168</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1485364428168</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485365024342</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1485365024342</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Insert image into posts&#10;Task #118 - Get twitter image for account">
+      <created>1485368719438</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1485368719438</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485368911689</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1485368911689</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485369065455</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1485369065455</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485369145529</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1485369145529</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485377720237</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1485377720237</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Product Backlog Item #98 - Create front end&#10;&#10;Fix sql query for retweets">
+      <created>1485377838861</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1485377838861</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485378443172</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1485378443172</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Start of addition to user lookup&#10;Task #118 - Get twitter image for account">
+      <created>1485379151616</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1485379151616</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Task #116 - Add style support for main areas on tweet&#10;Started implementing styling">
+      <created>1485950591161</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1485950591162</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Task #145 - Handle retweet links&#10;Fix to handle retweet links">
+      <created>1486142067855</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1486142067856</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Fixing a bug with some retweets">
+      <created>1486223612252</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1486223612253</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Removal of test code">
+      <created>1486224476933</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1486224476933</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Added additional styling&#10;Task #125 - Link colours&#10;Task #126 - background colour&#10;Task #124 - Hashtag colours&#10;Task #123 - Text colour&#10;Product Backlog Item #120 - Extend css support">
+      <created>1486370769974</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1486370769974</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Addition of separate js file and mods to admin side to introduce ajax on some pages&#10;&#10;Update to db to alter text for tweet to mediumtext">
+      <created>1488402145743</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1488402145744</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Removal of .idea directory">
+      <created>1488792365175</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1488792365175</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Removal of .idea directory">
+      <created>1488793438808</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1488793438808</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Upped version to 0.5 and added basic support for shortcode in a page">
+      <created>1489058835278</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1489058835279</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Slight modification of tweet html generated when short code used&#10;Task #131 - Create html for shortcode">
+      <created>1489421069153</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1489421069154</updated>
+    </task>
+    <task id="LOCAL-00076" summary="&#10;Changed code to pull last id&#10;&#10;Updated readme.md to include instructions and licence data&#10;Task #161 - Fix start tweet id for GetUserTimeline">
+      <created>1489492834687</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1489492834688</updated>
+    </task>
+    <task id="LOCAL-00077" summary="&#10;Fixing tweet list fields missing&#10;&#10;&#10;Product Backlog Item #171 - Display tweets in admin section">
+      <created>1489586804092</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1489586804092</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Task #195 - Add functionality to mark tweet as hidden in database&#10;&#10;Tweets can be marked as hidden">
+      <created>1489662159228</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1489662159229</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Task #195 - Add functionality to mark tweet as hidden in database&#10;&#10;Tweets can be marked as hidden">
+      <created>1490296855207</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1490296855208</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Rename of admin js file">
+      <created>1490296940310</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1490296940310</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Rename of admin js file">
+      <created>1490347385733</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1490347385734</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Updated version to 0.6.&#10;&#10;Completion of work for March">
+      <created>1490351917357</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1490351917357</updated>
+    </task>
+    <task id="LOCAL-00083" summary="Added message while working on data">
+      <created>1493396610949</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1493396610950</updated>
+    </task>
+    <task id="LOCAL-00084" summary="Fix for sql error when pulling through">
+      <created>1543437316289</created>
+      <option name="number" value="00084" />
+      <option name="presentableId" value="LOCAL-00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1543437316290</updated>
+    </task>
+    <option name="localTasksCounter" value="85" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="129203000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1920" height="1046" extended-state="6" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20748663" />
+      <window_info id="Structure" order="1" weight="0.2498618" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="0" weight="0.35490605" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" weight="0.32985386" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3426423" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5312327" side_tool="true" weight="0.38204592" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.34392735" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" sideWeight="0.4687673" visible="true" weight="0.3820598" />
+      <window_info anchor="bottom" id="Docker" order="11" sideWeight="0.4969563" weight="0.33924845" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" weight="0.1047261" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26091763" />
+      <window_info id="Structure" order="1" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Command Line Tools Console" order="0" visible="true" weight="0.32985386" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" />
+      <window_info anchor="bottom" id="Run" order="3" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50193477" side_tool="true" weight="0.19937369" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49806523" weight="0.19937369" />
+      <window_info anchor="bottom" id="Docker" order="11" weight="0.32985386" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" visible="true" weight="0.2100608" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list />
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Task #100 - Design front end display of tweets&#10;&#10;Bringing in url for tweet" />
+    <MESSAGE value="Task #100 - Design front end display of tweets&#10;&#10;Fixing Url issue" />
+    <MESSAGE value="Product Backlog Item #98 - Create front end&#10;&#10;replace hash tags with url" />
+    <MESSAGE value="Product Backlog Item #98 - Create front end&#10;&#10;Added twitter logo" />
+    <MESSAGE value="Product Backlog Item #98 - Create front end&#10;&#10;Formatting improvements to timeline view" />
+    <MESSAGE value="Packaging up plugin" />
+    <MESSAGE value="Insert image into posts&#10;Task #118 - Get twitter image for account" />
+    <MESSAGE value="Product Backlog Item #98 - Create front end&#10;&#10;Fix sql query for retweets" />
+    <MESSAGE value="Start of addition to user lookup&#10;Task #118 - Get twitter image for account" />
+    <MESSAGE value="Task #116 - Add style support for main areas on tweet&#10;Started implementing styling" />
+    <MESSAGE value="Task #145 - Handle retweet links&#10;Fix to handle retweet links" />
+    <MESSAGE value="Fixing a bug with some retweets" />
+    <MESSAGE value="Removal of test code" />
+    <MESSAGE value="Added additional styling&#10;Task #125 - Link colours&#10;Task #126 - background colour&#10;Task #124 - Hashtag colours&#10;Task #123 - Text colour&#10;Product Backlog Item #120 - Extend css support" />
+    <MESSAGE value="Addition of separate js file and mods to admin side to introduce ajax on some pages&#10;&#10;Update to db to alter text for tweet to mediumtext" />
+    <MESSAGE value="Removal of .idea directory" />
+    <MESSAGE value="Upped version to 0.5 and added basic support for shortcode in a page" />
+    <MESSAGE value="Slight modification of tweet html generated when short code used&#10;Task #131 - Create html for shortcode" />
+    <MESSAGE value="&#10;Changed code to pull last id&#10;&#10;Updated readme.md to include instructions and licence data&#10;Task #161 - Fix start tweet id for GetUserTimeline" />
+    <MESSAGE value="&#10;Fixing tweet list fields missing&#10;&#10;&#10;Product Backlog Item #171 - Display tweets in admin section" />
+    <MESSAGE value="Task #195 - Add functionality to mark tweet as hidden in database&#10;&#10;Tweets can be marked as hidden" />
+    <MESSAGE value="Rename of admin js file" />
+    <MESSAGE value="Updated version to 0.6.&#10;&#10;Completion of work for March" />
+    <MESSAGE value="Added message while working on data" />
+    <MESSAGE value="Fix for sql error when pulling through" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix for sql error when pulling through" />
+  </component>
+  <component name="WordPressConfiguration" enabled="true">
+    <wordpressPath>$PROJECT_DIR$/../../DoubleA Software Site</wordpressPath>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/3e249269-2521-442d-982f-aa2cce1c6185/console.sql" />
+    <entry file="file://$PROJECT_DIR$/../../DoubleA Software Site/wp-content/plugins/DoubleATwitterFeed/DoubleATwitterFeedWidget.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../DoubleA Software Site/wp-content/plugins/DoubleATwitterFeed/header.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="262" column="34" lean-forward="true" selection-start-line="262" selection-start-column="34" selection-end-line="262" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="dbDummy://dbtable:/306c66c2/3e249269-2521-442d-982f-aa2cce1c6185/doubleasoft.wp_options" />
+    <entry file="file://$PROJECT_DIR$/images/icon.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="dbDummy://dbtable:/306c66c2/3e249269-2521-442d-982f-aa2cce1c6185/doubleasoft.wp_doublea_twitter_data" />
+    <entry file="dbDummy://dbtable:/96baf88/3e249269-2521-442d-982f-aa2cce1c6185/doubleasoft.wp_doublea_twitter_quoted_data" />
+    <entry file="file://$PROJECT_DIR$/css/default.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/uninstall.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="46" selection-start-line="11" selection-start-column="46" selection-end-line="11" selection-end-column="46" />
+          <folding>
+            <marker date="1485378766748" expanded="true" signature="73:94" ph="DROP TABLE w... " />
+            <marker date="1485378766748" expanded="true" signature="73:115" ph="DROP TABLE w... " />
+            <marker date="1485378766748" expanded="true" signature="134:145" ph="DROP TABLE $... " />
+            <marker date="1485378766748" expanded="true" signature="134:183" ph="DROP TABLE w... " />
+            <marker date="1485378766748" expanded="true" signature="134:184" ph="DROP TABLE w... " />
+            <marker date="1485378766748" expanded="true" signature="201:250" ph="DROP TABLE $... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitmodules">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docker-compose.yml" />
+    <entry file="file://$PROJECT_DIR$/css/default.css.map">
+      <provider selected="true" editor-type-id="text-editor" />
+      <provider editor-type-id="sourcemapFileViewerProvider" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/admin_js.js" />
+    <entry file="file://$PROJECT_DIR$/Twitter/Twitter.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3360">
+          <caret line="12" column="6" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="330">
+            <caret line="20" column="39" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/dblatw_admin_js.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="135" column="3" selection-start-line="135" selection-start-column="3" selection-end-line="135" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/default.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/header.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="498">
+          <caret line="737" column="23" lean-forward="true" selection-start-line="737" selection-start-column="23" selection-end-line="737" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DoubleATwitterFeedWidget.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
+          <folding>
+            <element signature="n#style#0;n#ul#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#li#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

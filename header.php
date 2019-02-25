@@ -32,9 +32,8 @@ class DoubleATwitterFeed{
     const TWEET_MAIN_TABLE = "doublea_twitter_data";
     const TWEET_QUOTED_TABLE = "doublea_twitter_quoted_data";
     const TWEET_USER_LOOKUP_TABLE = "doublea_twitter_user_lookup";
-    const TWEET_STATUS_TABLE = "doublea_tweet_status";
     const WIDGET_CLASS = "DoubleATwitterFeedWidget";
-    const VERSION = "0.6";
+    const VERSION = "0.3";
 
     /**
      * DoubleATwitterFeed constructor.
@@ -67,11 +66,6 @@ class DoubleATwitterFeed{
             //Load scripts
             add_action( "admin_enqueue_scripts", array($this,"LoadScripts"));
 
-            //Ajax callbacks
-            add_action("wp_ajax_doublea_twitter_update_feed",array($this,"GetTwitterUserTimeline"));
-            add_action("wp_ajax_doublea_twitter_get_item",array($this,"GetTwitterItem"));
-            add_action("wp_ajax_doublea_get_tweets",array($this,"GetTweetList"));
-
             //Update timeline if needed
             $this->UpdateTimeline();
         }
@@ -93,14 +87,21 @@ class DoubleATwitterFeed{
      */
     function AdminInit(){
         add_action("admin_post_save_doublea_twitter_feed_configuration",array($this,"SaveConfiguration"));
-        add_action("wp_ajax_doubleatweet_hideunhide", array($this,"HideUnhideTweet"));
     }
 
     /**
      *
      */
     private function CheckVersion(){
+        if(get_option(self::CONFIGURATION_VERSION) != self::VERSION){
 
+            //Add twitter user lookup table. For version 0.3 just the image url
+            if(self::CONFIGURATION_VERSION < 0.3) {
+                $this->CreateTables();
+
+                update_option(self::CONFIGURATION_VERSION,self::VERSION);
+            }
+        }
     }
 
     /**
@@ -120,13 +121,13 @@ class DoubleATwitterFeed{
 
         //Create tweet table
         $sql = "CREATE TABLE IF NOT EXISTS ".$prefix.self::TWEET_MAIN_TABLE."(
-            id VARCHAR(30) NOT NULL ,screen_name VARCHAR(30) NOT NULL, created_at DATETIME NOT NULL, text MEDIUMTEXT, truncated CHAR(5), source VARCHAR(150), in_reply_to_status_id_str VARCHAR(30),in_reply_to_user_id_str VARCHAR(30), in_reply_to_screen_name VARCHAR(30),geo VARCHAR(30),coordinates VARCHAR(30), place VARCHAR(30), is_quote_status CHAR(5),quoted_status_id_str VARCHAR(30),url VARCHAR(255), recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY(id)
+            id VARCHAR(30) NOT NULL ,screen_name VARCHAR(30) NOT NULL, created_at DATETIME NOT NULL, text VARCHAR(140), truncated CHAR(5), source VARCHAR(150), in_reply_to_status_id_str VARCHAR(30),in_reply_to_user_id_str VARCHAR(30), in_reply_to_screen_name VARCHAR(30),geo VARCHAR(30),coordinates VARCHAR(30), place VARCHAR(30), is_quote_status CHAR(5),quoted_status_id_str VARCHAR(30),url VARCHAR(255), recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY(id)
         )";
         $wpdb->query($sql);
 
         //Created quoted status table
         $sql = "CREATE TABLE IF NOT EXISTS ".$prefix.self::TWEET_QUOTED_TABLE."(
-        id VARCHAR(30) NOT NULL, screen_name VARCHAR(30) NOT NULL, created_at DATETIME NOT NULL, text MEDIUMTEXT, truncated CHAR(5), source VARCHAR(150), in_reply_to_status_id_str VARCHAR(30),in_reply_to_user_id_str VARCHAR(30), in_reply_to_screen_name VARCHAR(30),geo VARCHAR(30),coordinates VARCHAR(30), place VARCHAR(30), is_quote_status CHAR(5),quoted_status_id_str VARCHAR(30), url VARCHAR(255), recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY(id)
+        id VARCHAR(30) NOT NULL, screen_name VARCHAR(30) NOT NULL, created_at DATETIME NOT NULL, text VARCHAR(140), truncated CHAR(5), source VARCHAR(150), in_reply_to_status_id_str VARCHAR(30),in_reply_to_user_id_str VARCHAR(30), in_reply_to_screen_name VARCHAR(30),geo VARCHAR(30),coordinates VARCHAR(30), place VARCHAR(30), is_quote_status CHAR(5),quoted_status_id_str VARCHAR(30), url VARCHAR(255), recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, UNIQUE KEY(id)
         )";
         $wpdb->query($sql);
 
@@ -134,9 +135,6 @@ class DoubleATwitterFeed{
             id VARCHAR(30) NOT NULL ,screen_name VARCHAR(30) NOT NULL, created_at DATETIME NOT NULL, profile_image_url_https VARCHAR(255), PRIMARY KEY(id))";
         $wpdb->query($sql);
 
-        //Tweet status table
-        $sql = "CREATE TABLE IF NOT EXISTS ".$prefix.self::TWEET_STATUS_TABLE." (id varchar(30) NOT NULL, status int NOT NULL);";
-        $wpdb->query($sql);
     }
 
     /**
@@ -147,44 +145,10 @@ class DoubleATwitterFeed{
     }
 
     /**
-     * @param $id
-     */
-    private function DisplayTweetFromId($id){
-        $html = "";
-        global $wpdb;
-
-        $tweet_details = $wpdb->get_results("SELECT created_at, text FROM ".$wpdb->get_blog_prefix()."doublea_twitter_data WHERE id='".$id."'", ARRAY_A);
-
-
-        $html.="<div class='doublea-tweet-details' style='width:450px;background-color:white;border:1px #ccc solid;border-radius:11px;padding:11px;'>";
-
-        $html.="<div class='doublea-tweet-header' style='width:100%;float:left;display:block;'><img src='".plugin_dir_url(__FILE__)."images/Twitter_Logo_Blue.png' width='25' height='25' alt='Twitter logo' /><a href='https://twitter.com/".$this->screen_name."' title='Twitter' target='_blank'>".$this->screen_name."</a></div>";
-
-        $html .= $tweet_details[0]["text"];
-
-        $created_at = new DateTime($tweet_details[0]["created_at"]);
-
-        $html .= "<div class='doublea-tweet-footer' style='border-top:#000 1px solid;'><small>Created :".$created_at->format("d-m-Y")."</small></div>";
-
-        $html .= "</div>";
-        return $html;
-    }
-
-
-    /**
      * Function to handle the shortcode
      */
     function DoShortCode($atts){
         $html = "";
-
-        //Get the attributes for the shortcode
-        foreach ($atts as $key => $value){
-            switch($key){
-                case "id":
-                    $html = $this->DisplayTweetFromId($value);
-                    break;
-            }
-        }
 
         echo $html;
     }
@@ -213,54 +177,6 @@ class DoubleATwitterFeed{
 
         $this->image_url = $wpdb->num_rows == 0 ? "" : $result[0]["profile_image_url_https"];
     }
-
-    /**
-     * @param $args
-     */
-    function GetTweetList($args)
-    {
-
-        $page_number=1;
-        if(isset($_GET["page_number"])){
-            $page_number = $_GET["page_number"];
-        }
-
-        global $wpdb;
-
-        $prefix = $wpdb->get_blog_prefix();
-
-        $record_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$prefix."doublea_twitter_data");
-
-        $offset = ($page_number - 1) * 10;
-
-        //TODO Add paging
-        $tweets = $wpdb->get_results("SELECT a.id AS id,a.created_at as created_at,a.text as text,a.is_quote_status as is_quote_status,a.url as url, ifnull(b.status,0)as status FROM ".$wpdb->get_blog_prefix()."doublea_twitter_data a LEFT JOIN ".$wpdb->get_blog_prefix()."doublea_tweet_status b on a.id = b.id ORDER BY created_at DESC LIMIT ".$offset.", 10",ARRAY_A);
-
-
-        header("Content-Type: application/json",true,200);
-        $result = array("recordCount" => $record_count);
-        array_push($result,array("data" => $tweets));
-
-        echo json_encode($result);
-        die();
-    }
-
-    /**
-     * @param $data
-     */
-    public function GetTwitterItem(){
-
-        global $wpdb;
-
-        $id = isset($_POST["tweet_id"]) ? $_POST["tweet_id"] : "0";
-        $results = $wpdb->get_results("SELECT a.id as id,a.text as text,a.created_at as created_at,ifnull(b.status,0) as status FROM ".$wpdb->get_blog_prefix()."doublea_twitter_data a left join ".$wpdb->get_blog_prefix()."doublea_tweet_status b ON a.id=b.id WHERE a.id=".$id);
-
-        header( "Content-Type: application/json" );
-        echo json_encode($results);
-
-        exit;
-    }
-
 
     /**
      * Called by GetTwitterUserTimeline
@@ -298,10 +214,10 @@ class DoubleATwitterFeed{
         if($this->screen_name != "" && $this->consumer_key != "") {
             $prefix = $wpdb->get_blog_prefix();
 
-            $last_tweet_id = $this->last_tweet_id;
-
             $twitter = new \doublea\social\Twitter($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
-            $results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, $last_tweet_id,false),true);
+            //$results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, $this->last_tweet_id,false),true);
+
+            $results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, 1,false),true);
 
             //TODO refactor the assignment of values for null
             //Insert into twitter data table
@@ -422,52 +338,11 @@ class DoubleATwitterFeed{
         }
     }
 
-
-    /**
-     * Called from ajax
-     */
-    public function HideUnhideTweet(){
-
-        $item_id = isset($_POST["item_id"]) ? $_POST["item_id"] : null;
-        $current_status_id = isset($_POST["current_status_id"]) ? $_POST["current_status_id"] : null;
-        $response_code = 0;
-        if($item_id != null && $current_status_id != null){
-            global $wpdb;
-            try {
-                $wpdb->query("DELETE FROM ".$wpdb->get_blog_prefix()."doublea_tweet_status WHERE id='".$item_id."'");
-
-                $current_status_id = $current_status_id == 0 ? 1 : 0;
-
-                $result = $wpdb->query("INSERT INTO " . $wpdb->get_blog_prefix() . "doublea_tweet_status VALUES('".$item_id."',".$current_status_id.");");
-
-                if ($result == 0) {
-                    throw new Exception();
-                }
-                $message = "{'status':'success'}";
-            }
-            catch (Exception $ex){
-                $response_code = 500;
-                $message = "{'status':'error'}";
-            }
-        }
-        else{
-            $response_code = 500;
-            $message = "{'status':'No tweet was found with this id'}";
-        }
-
-        header("Content-Type:application/json",true,$response_code);
-        echo $message;
-        die();
-
-    }
-
     /**
      *
      */
     function LoadScripts(){
-        $blarg = plugin_dir_url(__FILE__)."scripts/admin_js.js";
-        wp_enqueue_script('doubleatf-admin-script',plugin_dir_url(__FILE__)."scripts/dblatw_admin_js.js",array('jquery'));
-        wp_localize_script('doubleatf-admin-script','DoubleAAjax',array('ajaxurl' => admin_url('admin-ajax.php'),));
+	    wp_enqueue_script('doublea-twitter-admin-script',plugin_dir_url(__FILE__)."/scripts/dblatw_admin_js.js?ver=1.1",array("jquery"));
     }
 
     /**
@@ -526,12 +401,12 @@ class DoubleATwitterFeed{
      *
      */
     function SetupConfiguration(){
+
         if(isset($_GET["saved"])){
             ?>
             <div id='message' class='updated fade'><p><strong><?php  echo __("Settings Saved");?></strong></p></div>
             <?php
         }
-
 
         $this->GetConfiguration();
 
@@ -539,26 +414,10 @@ class DoubleATwitterFeed{
         $date_time = new DateTime($date);
 
         ?>
-        <style>
-            table td{
-                border:0;
-                border-collapse: collapse;
-                border-left:1px #000 solid;
-            }
-
-            table thead td{
-                font-weight:bold;
-            }
-
-            .even{
-                background-color: #9acfea;
-            }
-        </style>
         <h1>DoubleA Software - Twitter Feed - version <?php echo self::VERSION;?></h1>
         <h2 class="nav-tab-wrapper wp-clearfix">
             <a class="nav-tab nav-tab-active" target-div="main-configuration" href="#"><?php echo __("Main configuration");?></a>
             <a class="nav-tab" target-div="styling-configuration" href="#"><?php echo __("Styling");?></a>
-            <a class="nav-tab" target-div="data-configuration" href="#" id="data-configuration"><?php echo __("Data");?></a>
             <a class="nav-tab" target-div="status-configuration" href="#"><?php echo __("Status");?></a>
         </h2>
         <form id="form-doublea-config" method="post" action="<?php echo admin_url("admin-post.php");?>">
@@ -595,64 +454,39 @@ class DoubleATwitterFeed{
                         <option value="1440"<?php if($this->feed_update==1440){echo " selected";}?>>1 day</option>
                     </select>
                 </div>
-                <?php //Tweet styling ?>
                 <div class="styling-configuration">
+                    <?php
+                        //local vars
+                        $tweet_text_colour = isset($this->styles["tweet_text_colour"]) ? $this->styles["tweet_text_colour"] : "#000";
+                        $tweet_background_colour = isset($this->styles["tweet_background_colour"]) ? $this->styles["tweet_background_colour"] : "#FFF";
+                        $tweet_link_colour = isset($this->styles["tweet_link_colour"]) ? $this->styles["tweet_link_colour"] : "blue";
+                        $tweet_hashtag_colour = isset($this->styles["tweet_hashtag_colour"]) ? $this->styles["tweet_hashtag_colour"] : "#ccc";
+                        $retweet_background_colour = isset($this->styles["retweet_background_colour"]) ? $this->styles["retweet_background_colour"] : "#FFF";
+                        $retweet_text_colour = isset($this->styles["retweet_text_colour"]) ? $this->styles["retweet_text_colour"] : "#000";
+
+                    ?>
                     <h2><?php echo __("Tweet styles");?></h2>
-                    <!-- Tweet text colour -->
-                    <?php $colour = isset($this->styles["tweet_text_colour"]) ? $this->styles["tweet_text_colour"] : "#000"; ?>
-                    <label for="tweet_text_colour"><?php echo __("Tweet tweet colour");?></label><br/>
-                    <input type="text" name="tweet_text_colour" class="tweet_style" id="tweet_text_colour" value="<?php echo $colour; ?>" />
-                    <div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                    <br/>
+                    <!--Tweet text colour -->
+                    <label for="tweet_text_colour"><?php echo __("Tweet text colour")?></label><br/>
+                    <input type="text" name="tweet_text_colour" id="tweet_text_colour" value="<?php echo $tweet_text_colour;?>" /><br/>
                     <!-- Tweet background colour -->
-                    <?php $colour = isset($this->styles["tweet_background_colour"]) ? $this->styles["tweet_background_colour"] : "#FFF";?>
-                    <label for="tweet_background_colour"><?php echo __("Tweet background colour");?></label><br/>
-                    <input type="text" name="tweet_background_colour" class="tweet_style" id="tweet_background_colour" value="<?php echo $colour ?>" /><div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><br/>
-                    <!-- Tweet link colours -->
-                    <?php $colour = isset($this->styles["tweet_link_colour"]) ? $this->styles["tweet_link_colour"] : "#337ab7";?>
-                    <label for="tweet_link_colour"><?php echo __("Tweet link colour");?></label><br/>
-                    <input type="text" name="tweet_link_colour" class="tweet_style" id="tweet_link_colour" value="<?php echo $colour; ?>" /><div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><br/>
+                    <label for="tweet_background_colour"><?php echo __("Tweet background colour")?></label><br/>
+                    <input type="text" name="tweet_background_colour" id="tweet_background_colour" value="<?php echo $tweet_background_colour?>" /><br/>
+                    <!-- Tweet link colour -->
+                    <label for="tweet_link_colour"><?php echo __("Tweet link colour")?></label><br/>
+                    <input type="text" name="tweet_link_colour" id="tweet_link_colour" value="<?php echo $tweet_link_colour;?>" /><br/>
                     <!-- Tweet hashtag colour -->
-                    <?php $colour = isset($this->styles["tweet_hashtag_colour"]) ? $this->styles["tweet_hashtag_colour"] : "#337ab7";?>
-                    <label for="tweet_hashtag_colour"><?php echo __("Tweet hashtag colour");?></label><br/>
-                    <input type="text" name="tweet_hashtag_colour" class="tweet_style" id="tweet_hashtag_colour" value="<?php echo $colour; ?>" /><div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><br/>
+                    <label for="tweet_hashtag_colour"><?php echo __("Tweet hashtag colour")?></label><br/>
+                    <input type="text" name="tweet_hashtag_colour" id="tweet_hashtag_colour" value="<?php echo $tweet_hashtag_colour;?>" /><br/>
                     <!-- Retweet background colour -->
-                    <?php $colour = isset($this->styles["retweet_background_colour"]) ? $this->styles["retweet_background_colour"] : "#fff"; ?>
                     <label for="retweet_background_colour"><?php echo __("Retweet background colour");?></label><br/>
-                    <input type="text" name="retweet_background_colour" class="tweet_style" id="retweet_background_colour" value="<?php echo $colour;?>" /><div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><br/>
+                    <input type="text" name="retweet_background_colour" id="retweet_background_colour" value="<?php echo $retweet_background_colour;?>" /><br/>
                     <!-- Retweet text colour -->
-                    <?php $colour = isset($this->styles["retweet_text_colour"]) ? $this->styles["retweet_text_colour"] : "#000"; ?>
                     <label for="retweet_text_colour"><?php echo __("Retweet text colour");?></label><br/>
-                    <input type="text" name="retweet_text_colour" class="tweet_style" id="retweet_text_colour" value="<?php echo $colour; ?>" /><div style="display: inline;background-color:<?php echo $colour;?>;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><br/>
-                </div>
-                <div class="data-configuration">
-                    <h2><?php echo __("Data stored");?></h2>
-                    <table style="width: 100%;">
-                        <thead>
-                        <tr>
-                            <td style="font-weight: bold;">Id</td>
-                            <td><?php echo __("Created on");?></td>
-                            <td><?php echo __("Text");?></td>
-                            <td><?php echo __("Retweeted?");?></td>
-                            <td>Url</td>
-                            <td><?php echo __("Status");?></td>
-                        </tr>
-                        </thead>
-                        <tbody id="doublea-tweet-list-body">
-                        </tbody>
-                    </table>
-                    <button id="button-tweet-data-previous" type="button" disabled><-&nbsp;<?php echo __("Previous");?></button><button id="button-tweet-data-next" type="button" disabled><?php echo __("Next");?>&nbsp;-></button><span id="tweet-data-message" style="font-size: 19px;"></span>
-                    <hr/>
-                    <h2><?php echo __("Detailed tweet data");?></h2>
-                    <label>Id :</label><span id="data-tweet-id"></span><br/><br/>
-                    <input type="hidden" id="data-tweet-status-id" />
-                    <label><?php echo __("Created on");?> :</label><span id="data-tweet-created-on"></span><br/><br/>
-                    <label><?php echo __("Text");?> :</label><span id="data-tweet-text"></span><br/><br/>
-                    <label><?php echo __("Status");?> :</label><span id="data-tweet-status"></span><br/><br/>
-                    <hr/>
-                    <h2><?php echo __("Tweet options");?></h2>
-                    <label><?php echo __("Hide this tweet from the list");?></label><button id="button-hide-tweet" disabled type="button"><?php echo __("Hide tweet");?></button><br/>
-                    <hr/>
+                    <input type="text" name="retweet_text_colour" id="retweet_text_colour" value="<?php echo $retweet_text_colour;?>" /><br/>
+                    <div class="retweet-preview">
+                        <p>This is a preview for the tweet</p>
+                    </div>
                 </div>
                 <div class="status-configuration">
                     <h2><?php echo __("Other plugin information");?></h2>
@@ -667,7 +501,7 @@ class DoubleATwitterFeed{
                     <br/>
                     <label><?php echo __("Last update id");?>: <?php echo $this->last_tweet_id;?></label><br/><hr/>
                     <label><?php echo __("Next update");?>: <?php echo $date_time->format("d-M-Y H:i:s");?></label>
-                    <button type="button" id="butt_update_now"><?php echo __("Update now");?></button><span id="butt_update_now_status"></span>
+                    <button type="submit"><?php echo __("Update now");?></button>
                 </div>
                 <br/><br/>
                 <button type="submit" id="save-configuration" class="btn btn-default"><?php echo __("Save configuration");?></button>
@@ -723,9 +557,9 @@ class DoubleATwitterFeed{
         //Styles
         $this->styles = array(
             "tweet_text_colour" => isset($_POST["tweet_text_colour"]) ? $_POST["tweet_text_colour"] : "#000",
-            "tweet_background_colour" => isset($_POST["tweet_background_colour"]) ? $_POST["tweet_background_colour"] : "#FFF",
-            "tweet_link_colour" => isset($_POST["tweet_link_colour"]) ? $_POST["tweet_link_colour"] : "#337ab7",
-            "tweet_hashtag_colour" => isset($_POST["tweet_hashtag_colour"]) ? $_POST["tweet_hashtag_colour"] : "#337ab7",
+            "tweet_link_colour" => isset($_POST["tweet_link_colour"]) ? $_POST["tweet_link_colour"] : "#000",
+            "tweet_background_colour" => isset($_POST["tweet_background_colour"]) ? $_POST["tweet_background_colour"] : "#000",
+            "tweet_hashtag_colour" => isset($_POST["tweet_hashtag_colour"]) ? $_POST["tweet_hashtag_colour"] : "#000",
             "retweet_background_colour" => isset($_POST["retweet_background_colour"]) ? $_POST["retweet_background_colour"] : "#ddd",
             "retweet_text_colour" => isset($_POST["retweet_text_colour"]) ? $_POST["retweet_text_colour"] : "#000"
         );

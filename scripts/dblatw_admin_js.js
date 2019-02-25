@@ -11,7 +11,7 @@ jQuery(document).ready(function(){
         jQuery.post(ajaxurl,{
             'action': 'doublea_twitter_update_feed'
         },function(response){
-            jQuery("#butt_update_now_status").text("Update started!");
+           jQuery("#butt_update_now_status").text("Update started!");
         });
     });
     /* View the tweet */
@@ -20,8 +20,8 @@ jQuery(document).ready(function(){
         jQuery("#button-hide-tweet").removeAttr("disabled");
 
         jQuery.post(DoubleAAjax.ajaxurl,{
-                'action' : 'doublea_twitter_get_item',
-                'tweet_id' : jQuery(this).attr("tweet-data-id"),
+            'action' : 'doublea_twitter_get_item',
+            'tweet_id' : jQuery(this).attr("tweet-data-id"),
 
             },
             function (response) {
@@ -122,15 +122,22 @@ jQuery(document).ready(function(){
 
     /* Hide the tweet */
     jQuery("#button-hide-tweet").click(function(){
-        jQuery.post(DoubleAAjax.ajaxurl,{
-                'action': 'doubleatweet_hideunhide',
-                'item_id': jQuery("#data-tweet-id").text(),
-                'current_status_id' : jQuery("#data-tweet-status-id").val()
-            },
-            function(response) {
+       jQuery.post(DoubleAAjax.ajaxurl,{
+          'action': 'doubleatweet_hideunhide',
+           'item_id': jQuery("#data-tweet-id").text(),
+           'current_status_id' : jQuery("#data-tweet-status-id").val()
+           },
+           function(response) {
                 alert(response);
-            }
-        );
+           }
+       );
     });
 
+    //Display the retweet preview
+    jQuery('#retweet_background_colour, #retweet_text_colour').blur(function(){
+       jQuery('.retweet-preview').css({
+           "background-color": jQuery('#retweet_background_colour').val(),
+           "color": jQuery('#retweet_text_colour').val()
+       })
+    });
 });
