@@ -412,7 +412,7 @@ class DoubleATwitterFeed{
 
         $date = $this->feed_next_update == 0 ? date("Y-M-d H:i:s") : date("Y-M-d H:i:s",$this->feed_next_update);
         $date_time = new DateTime($date);
-
+        $date_time_str = $date_time->format("d-M-Y H:i:s");
         ?>
         <h1>DoubleA Software - Twitter Feed - version <?php echo self::VERSION;?></h1>
         <h2 class="nav-tab-wrapper wp-clearfix">
@@ -421,6 +421,8 @@ class DoubleATwitterFeed{
             <a class="nav-tab" target-div="status-configuration" href="#"><?php echo __("Status");?></a>
         </h2>
         <form id="form-doublea-config" method="post" action="<?php echo admin_url("admin-post.php");?>">
+            <input type="hidden" id="date_time" name="date_time" value="<?php echo $date_time_str;?>" />
+            <?php wp_nonce_field("date__and__time_".$date_time_str);?>
             <input type="hidden" id="original_screen_name" name="original_screen_name" value="<?php echo $this->screen_name;?>" />
             <input type="hidden" name="action" value="save_doublea_twitter_feed_configuration" />
             <input type="hidden" id="button_clicked" name="button_clicked" value="false" />
@@ -546,26 +548,33 @@ class DoubleATwitterFeed{
      */
     function SaveConfiguration(){
 
-        $this->consumer_key = $_POST["consumer_key"];
-        $this->consumer_secret = $_POST["consumer_secret"];
-        $this->access_token = $_POST["access_token"];
-        $this->access_token_secret = $_POST["access_token_secret"];
-        $this->screen_name = $_POST["screen_name"];
-        $this->feed_count = $_POST["feed_count"];
-        $this->feed_update = $_POST["feed_update"];
+        if(check_admin_referer("date__and__time_".$_POST["date_time"])) {
 
-        //Styles
-        $this->styles = array(
-            "tweet_text_colour" => isset($_POST["tweet_text_colour"]) ? $_POST["tweet_text_colour"] : "#000",
-            "tweet_link_colour" => isset($_POST["tweet_link_colour"]) ? $_POST["tweet_link_colour"] : "#000",
-            "tweet_background_colour" => isset($_POST["tweet_background_colour"]) ? $_POST["tweet_background_colour"] : "#000",
-            "tweet_hashtag_colour" => isset($_POST["tweet_hashtag_colour"]) ? $_POST["tweet_hashtag_colour"] : "#000",
-            "retweet_background_colour" => isset($_POST["retweet_background_colour"]) ? $_POST["retweet_background_colour"] : "#ddd",
-            "retweet_text_colour" => isset($_POST["retweet_text_colour"]) ? $_POST["retweet_text_colour"] : "#000"
-        );
+	        $this->consumer_key        = $_POST["consumer_key"];
+	        $this->consumer_secret     = $_POST["consumer_secret"];
+	        $this->access_token        = $_POST["access_token"];
+	        $this->access_token_secret = $_POST["access_token_secret"];
+	        $this->screen_name         = $_POST["screen_name"];
+	        $this->feed_count          = $_POST["feed_count"];
+	        $this->feed_update         = $_POST["feed_update"];
 
-        $this->SetConfiguration();
-        wp_redirect(admin_url("admin.php?page=doublea-twitter-feed&saved=true"));
+
+	        //Styles
+	        $this->styles = array(
+		        "tweet_text_colour"         => isset( $_POST["tweet_text_colour"] ) ? $_POST["tweet_text_colour"] : "#000",
+		        "tweet_link_colour"         => isset( $_POST["tweet_link_colour"] ) ? $_POST["tweet_link_colour"] : "#000",
+		        "tweet_background_colour"   => isset( $_POST["tweet_background_colour"] ) ? $_POST["tweet_background_colour"] : "#000",
+		        "tweet_hashtag_colour"      => isset( $_POST["tweet_hashtag_colour"] ) ? $_POST["tweet_hashtag_colour"] : "#000",
+		        "retweet_background_colour" => isset( $_POST["retweet_background_colour"] ) ? $_POST["retweet_background_colour"] : "#ddd",
+		        "retweet_text_colour"       => isset( $_POST["retweet_text_colour"] ) ? $_POST["retweet_text_colour"] : "#000"
+	        );
+
+	        $this->SetConfiguration();
+	        wp_redirect( admin_url( "admin.php?page=doublea-twitter-feed&saved=true" ) );
+        }
+        else{
+            wp_redirect(admin_url("admin.php?page=doublea-twitter-feed&saved=false"));
+        }
     }
 
     /**
