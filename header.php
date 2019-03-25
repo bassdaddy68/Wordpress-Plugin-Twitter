@@ -27,7 +27,8 @@ class DoubleATwitterFeed{
     private $image_url = "";
     private $styles = array();
 
-    const CONFIGURATION = "doublea-twitter-feed-configuration";
+    const CONFIGURATION = 'doublea-twitter-feed-configuration';
+    const CONFIGURATION_MESSAGE = 'doublea-twitter-feed-message';
     const CONFIGURATION_VERSION = "doublea-twitter-feed-version";
     const TWEET_MAIN_TABLE = "doublea_twitter_data";
     const TWEET_QUOTED_TABLE = "doublea_twitter_quoted_data";
@@ -75,6 +76,12 @@ class DoubleATwitterFeed{
      * Activation of plugin
      */
     function Activation(){
+        //Check whether the key message has been created
+        if(!get_option(self::CONFIGURATION_MESSAGE)){
+	        $key = base64_encode(openssl_random_pseudo_bytes(32));
+            add_option(self::CONFIGURATION_MESSAGE, $key);
+        }
+
         //Create sql tables
         $this->CreateTables();
 
@@ -153,19 +160,37 @@ class DoubleATwitterFeed{
         echo $html;
     }
 
+    function Decrypt($data,$key){
+	    $encryption_key = base64_decode($key);
+	    list($encrypted_data, $iv) = explode('::', base64_decode($data), 2);
+	    return openssl_decrypt($encrypted_data, 'aes-256-cbc', $encryption_key, 0, $iv);
+    }
+
+    /*
+     *
+     * Encryption of keys used
+     *
+     */
+    function Encrypt($data, $key){
+	    $encryption_key = base64_decode($key);
+	    $iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-256-cbc'));
+	    $encrypted = openssl_encrypt($data, 'aes-256-cbc', $encryption_key, 0, $iv);
+	    return base64_encode($encrypted . '::' . $iv);
+    }
+
     /**
      *
      */
     private function GetConfiguration(){
         $configuration = json_decode(get_option(self::CONFIGURATION),true);
-
-        $this->consumer_key = $configuration["consumer_key"];
-        $this->consumer_secret = $configuration["consumer_secret"];
-        $this->access_token = $configuration["access_token"];
-        $this->access_token_secret = $configuration["access_token_secret"];
-        $this->screen_name = $configuration["screen_name"];
-        $this->feed_count = is_numeric($configuration["feed_count"]) ? $configuration["feed_count"] : "10";
-        $this->feed_update = is_numeric($configuration["feed_update"]) ? $configuration["feed_update"] : "15";
+        $key = get_option(self::CONFIGURATION_MESSAGE);
+        $this->consumer_key = isset($configuration['consumer_key']) ? $this->Decrypt($configuration['consumer_key'],$key) : '';
+        $this->consumer_secret = isset($configuration['consumer_secret']) ? $this->Decrypt($configuration['consumer_secret'],$key) : '';
+        $this->access_token = isset($configuration['access_token']) ? $this->Decrypt($configuration['access_token'],$key) : '';
+        $this->access_token_secret = isset($configuration['access_token_secret']) ? $this->Decrypt($configuration['access_token_secret'],$key) : '';
+        $this->screen_name = $configuration['screen_name'];
+        $this->feed_count = is_numeric($configuration['feed_count']) ? $configuration['feed_count'] : "10";
+        $this->feed_update = is_numeric($configuration['feed_update']) ? $configuration['feed_update'] : "15";
         $this->feed_next_update = is_numeric($configuration["feed_next_update"]) ? $configuration["feed_next_update"] : 0;
         $this->last_tweet_id = is_numeric($configuration["last_tweet_id"]) ? $configuration["last_tweet_id"] : 0;
         $this->styles = $configuration["styles"];
@@ -183,7 +208,12 @@ class DoubleATwitterFeed{
      */
     private function GetTwitterUserLookup($twitter){
 
-        $results = json_decode($twitter->UserLookup($this->screen_name),true);
+        try {
+	        $results = json_decode( $twitter->UserLookup( $this->screen_name ), true );
+        }
+        catch (Exception $ex){
+
+        }
 
         if(array_key_exists("profile_image_url_https",$results[0])){
             $this->image_url = $results[0]["profile_image_url_https"];
@@ -214,127 +244,135 @@ class DoubleATwitterFeed{
         if($this->screen_name != "" && $this->consumer_key != "") {
             $prefix = $wpdb->get_blog_prefix();
 
-            $twitter = new \doublea\social\Twitter($this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
-            //$results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, $this->last_tweet_id,false),true);
+            //Decrypt keys and token
 
-            $results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, 1,false),true);
+            $key = get_option(self::CONFIGURATION_MESSAGE);
+            try {
+	            $twitter = new \doublea\social\Twitter( $this->consumer_key, $this->consumer_secret, $this->access_token, $this->access_token_secret);
+	            //$results = json_decode($twitter->UserTimeline($this->screen_name, $this->feed_count, $this->last_tweet_id,false),true);
 
-            //TODO refactor the assignment of values for null
-            //Insert into twitter data table
-            foreach ($results as $result) {
-                $id = $result["id_str"];
-                $created_at = new DateTime($result["created_at"]);
-                $text = $result["text"];
-                $truncated = $result["truncated"];
+	            $results = json_decode( $twitter->UserTimeline( $this->screen_name, $this->feed_count, 1, false ), true );
 
-                $source = esc_html($result["source"]);
-                $in_reply_to_status_id = isset($result["in_reply_to_status_id_str"]) ? $result["in_reply_to_status_id_str"] : "";
-                $in_reply_to_user_id = isset($result["in_reply_to_user_id_str"]) ? $result["in_reply_to_user_id_str"] == null : "";
-                $in_reply_to_screen_name = isset($result["in_reply_to_screen_name"]) ? $result["in_reply_to_screen_name"] : "";
-                $geo = isset($result["geo"]) ? $result["geo"] : "";
-                $coordinates = isset($result["coordinates"]) ? $result["coordinates"] : "";
-                $place = isset($result["place"]) ? $result["place"] : "";
-                $is_quote_status = isset($result["is_quote_status"]) ?  $result["is_quote_status"] : "";
+	            //TODO refactor the assignment of values for null
+	            //Insert into twitter data table
+	            foreach ( $results as $result ) {
+		            $id         = $result["id_str"];
+		            $created_at = new DateTime( $result["created_at"] );
+		            $text       = $result["text"];
+		            $truncated  = $result["truncated"];
 
-                $quoted_status_id = "";
-                if(array_key_exists("quoted_status_id_str",$result)){
-                    $quoted_status_id = $result["quoted_status_id_str"];
-                }
+		            $source                  = esc_html( $result["source"] );
+		            $in_reply_to_status_id   = isset( $result["in_reply_to_status_id_str"] ) ? $result["in_reply_to_status_id_str"] : "";
+		            $in_reply_to_user_id     = isset( $result["in_reply_to_user_id_str"] ) ? $result["in_reply_to_user_id_str"] == null : "";
+		            $in_reply_to_screen_name = isset( $result["in_reply_to_screen_name"] ) ? $result["in_reply_to_screen_name"] : "";
+		            $geo                     = isset( $result["geo"] ) ? $result["geo"] : "";
+		            $coordinates             = isset( $result["coordinates"] ) ? $result["coordinates"] : "";
+		            $place                   = isset( $result["place"] ) ? $result["place"] : "";
+		            $is_quote_status         = isset( $result["is_quote_status"] ) ? $result["is_quote_status"] : "";
 
-                //Get a url for the tweet
-                $url = isset($result["entities"]["urls"][0]["url"]) ? $result["entities"]["urls"][0]["url"] : "";
+		            $quoted_status_id = "";
+		            if ( array_key_exists( "quoted_status_id_str", $result ) ) {
+			            $quoted_status_id = $result["quoted_status_id_str"];
+		            }
 
-                //Update the last tweet
-                if($this->last_tweet_id < $id){
-                    $this->last_tweet_id = $id;
-                }
+		            //Get a url for the tweet
+		            $url = isset( $result["entities"]["urls"][0]["url"] ) ? $result["entities"]["urls"][0]["url"] : "";
 
-                //Check whether this is a duplicate
-                $query = "SELECT id FROM ".$wpdb->get_blog_prefix().self::TWEET_MAIN_TABLE." WHERE id=".$id;
+		            //Update the last tweet
+		            if ( $this->last_tweet_id < $id ) {
+			            $this->last_tweet_id = $id;
+		            }
 
-                if($wpdb->query($query) == 0) {
+		            //Check whether this is a duplicate
+		            $query = "SELECT id FROM " . $wpdb->get_blog_prefix() . self::TWEET_MAIN_TABLE . " WHERE id=" . $id;
 
-                    $insert_query = array(
-                        "id" => $id,
-                        "screen_name" => $this->screen_name,
-                        "created_at" => $created_at->format("Y-m-d H:i:s"),
-                        "text" => $text,
-                        "truncated" => $truncated,
-                        "source" => $source,
-                        "in_reply_to_status_id_str" => $in_reply_to_status_id,
-                        "in_reply_to_user_id_str" => $in_reply_to_user_id,
-                        "in_reply_to_screen_name" => $in_reply_to_screen_name,
-                        "geo" => $geo,
-                        "coordinates" => $coordinates,
-                        "place" => $place,
-                        "is_quote_status" => $is_quote_status,
-                        "quoted_status_id_str" => $quoted_status_id,
-                        "url" => $url
-                    );
+		            if ( $wpdb->query( $query ) == 0 ) {
 
-                    $query = 'INSERT INTO '.$prefix.self::TWEET_MAIN_TABLE.'(`id`,`screen_name`,`created_at`,`text`,`truncated`,`source`,`in_reply_to_status_id_str`,`in_reply_to_user_id_str`,`in_reply_to_screen_name`,`geo`,`coordinates`,`place`,`is_quote_status`,`quoted_status_id_str`,`url`) VALUES("'.$id.'","'.$this->screen_name.'","'.$created_at->format("Y-m-d H:i:s").'","'.$text.'","'.$truncated.'","'.$source.'","'.$in_reply_to_status_id.'","'.$in_reply_to_user_id.'","'.$in_reply_to_screen_name.'","'.$geo.'","'.$coordinates.'","'.$place.'","'.$is_quote_status.'","'.$quoted_status_id.'","'.$url.'");';
+			            $insert_query = array(
+				            "id"                        => $id,
+				            "screen_name"               => $this->screen_name,
+				            "created_at"                => $created_at->format( "Y-m-d H:i:s" ),
+				            "text"                      => $text,
+				            "truncated"                 => $truncated,
+				            "source"                    => $source,
+				            "in_reply_to_status_id_str" => $in_reply_to_status_id,
+				            "in_reply_to_user_id_str"   => $in_reply_to_user_id,
+				            "in_reply_to_screen_name"   => $in_reply_to_screen_name,
+				            "geo"                       => $geo,
+				            "coordinates"               => $coordinates,
+				            "place"                     => $place,
+				            "is_quote_status"           => $is_quote_status,
+				            "quoted_status_id_str"      => $quoted_status_id,
+				            "url"                       => $url
+			            );
+
+			            $query = 'INSERT INTO ' . $prefix . self::TWEET_MAIN_TABLE . '(`id`,`screen_name`,`created_at`,`text`,`truncated`,`source`,`in_reply_to_status_id_str`,`in_reply_to_user_id_str`,`in_reply_to_screen_name`,`geo`,`coordinates`,`place`,`is_quote_status`,`quoted_status_id_str`,`url`) VALUES("' . $id . '","' . $this->screen_name . '","' . $created_at->format( "Y-m-d H:i:s" ) . '","' . $text . '","' . $truncated . '","' . $source . '","' . $in_reply_to_status_id . '","' . $in_reply_to_user_id . '","' . $in_reply_to_screen_name . '","' . $geo . '","' . $coordinates . '","' . $place . '","' . $is_quote_status . '","' . $quoted_status_id . '","' . $url . '");';
 
 
-                    $wpdb->query($query);
+			            $wpdb->query( $query );
 
-                    //Is this a retweet?
-                    if($is_quote_status == true){
-                        $created_at = new DateTime($result["quoted_status"]["created_at"]);
-                        $text = $result["quoted_status"]["text"];
-                        $truncated = $result["quoted_status"]["truncated"];
-                        $source = $result["quoted_status"]["source"];
-                        $in_reply_to_status_id = $result["quoted_status"]["in_reply_to_status_id_str"];
-                        $in_reply_to_user_id = $result["quoted_status"]["in_reply_to_user_id_str"];
-                        $in_reply_to_screen_name = $result["quoted_status"]["in_reply_to_screen_name"];
-                        $geo = $result["quoted_status"]["geo"];
-                        $coordinates = $result["quoted_status"]["coordinates"];
-                        $place = $result["quoted_status"]["place"];
-                        $is_quote_status = $result["quoted_status"]["is_quote_status"];
+			            //Is this a retweet?
+			            if ( $is_quote_status == true ) {
+				            $created_at              = new DateTime( $result["quoted_status"]["created_at"] );
+				            $text                    = $result["quoted_status"]["text"];
+				            $truncated               = $result["quoted_status"]["truncated"];
+				            $source                  = $result["quoted_status"]["source"];
+				            $in_reply_to_status_id   = $result["quoted_status"]["in_reply_to_status_id_str"];
+				            $in_reply_to_user_id     = $result["quoted_status"]["in_reply_to_user_id_str"];
+				            $in_reply_to_screen_name = $result["quoted_status"]["in_reply_to_screen_name"];
+				            $geo                     = $result["quoted_status"]["geo"];
+				            $coordinates             = $result["quoted_status"]["coordinates"];
+				            $place                   = $result["quoted_status"]["place"];
+				            $is_quote_status         = $result["quoted_status"]["is_quote_status"];
 
-                        $wpdb->insert($prefix.self::TWEET_QUOTED_TABLE,
-                            array(
-                                "id" => $quoted_status_id,
-                                "screen_name" => $this->screen_name,
-                                "created_at" => $created_at->format("Y-m-d H:i:s"),
-                                "text" => $text,
-                                "truncated" => $truncated,
-                                "source" => $source,
-                                "in_reply_to_status_id_str" => $in_reply_to_status_id,
-                                "in_reply_to_user_id_str" => $in_reply_to_user_id,
-                                "in_reply_to_screen_name" => $in_reply_to_screen_name,
-                                "geo" => $geo,
-                                "coordinates" => $coordinates,
-                                "place" => $place,
-                                "is_quote_status" => $is_quote_status,
-                                "quoted_status_id_str" => $quoted_status_id
-                            ),
-                            array(
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s",
-                                "%s"
-                            )
-                        );
-                    }
-                }
+				            $wpdb->insert( $prefix . self::TWEET_QUOTED_TABLE,
+					            array(
+						            "id"                        => $quoted_status_id,
+						            "screen_name"               => $this->screen_name,
+						            "created_at"                => $created_at->format( "Y-m-d H:i:s" ),
+						            "text"                      => $text,
+						            "truncated"                 => $truncated,
+						            "source"                    => $source,
+						            "in_reply_to_status_id_str" => $in_reply_to_status_id,
+						            "in_reply_to_user_id_str"   => $in_reply_to_user_id,
+						            "in_reply_to_screen_name"   => $in_reply_to_screen_name,
+						            "geo"                       => $geo,
+						            "coordinates"               => $coordinates,
+						            "place"                     => $place,
+						            "is_quote_status"           => $is_quote_status,
+						            "quoted_status_id_str"      => $quoted_status_id
+					            ),
+					            array(
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s",
+						            "%s"
+					            )
+				            );
+			            }
+		            }
+	            }
+
+	            //Call the GetTwitterUserLookup function to update image
+	            $this->GetTwitterUserLookup( $twitter );
+
+	            //Update the next feed time
+	            $this->feed_next_update = ( $this->feed_update * 60 ) + time();
+	            $this->SetConfiguration();
             }
-
-            //Call the GetTwitterUserLookup function to update image
-            $this->GetTwitterUserLookup($twitter);
-
-            //Update the next feed time
-            $this->feed_next_update = ($this->feed_update * 60) + time();
-            $this->SetConfiguration();
+            catch (Exception $ex){
+                //TODO Handle exception
+            }
         }
     }
 
@@ -382,10 +420,13 @@ class DoubleATwitterFeed{
 
         $options = array();
 
-        $options["consumer_key"] = $this->consumer_key;
-        $options["consumer_secret"] = $this->consumer_secret;
-        $options["access_token"] = $this->access_token;
-        $options["access_token_secret"] = $this->access_token_secret;
+        //Get the message for the encryption
+        $message = get_option(self::CONFIGURATION_MESSAGE);
+
+        $options["consumer_key"] = $this->Encrypt($this->consumer_key,$message);
+        $options["consumer_secret"] = $this->Encrypt($this->consumer_secret,$message);
+        $options["access_token"] = $this->Encrypt($this->access_token, $message);
+        $options["access_token_secret"] = $this->Encrypt($this->access_token_secret, $message);
         $options["screen_name"] = $this->screen_name;
         $options["feed_count"] = $this->feed_count;
         $options["feed_update"] = $this->feed_update;
@@ -403,9 +444,16 @@ class DoubleATwitterFeed{
     function SetupConfiguration(){
 
         if(isset($_GET["saved"])){
-            ?>
-            <div id='message' class='updated fade'><p><strong><?php  echo __("Settings Saved");?></strong></p></div>
-            <?php
+            if($_GET['saved'] == true) {
+	            ?>
+                <div id='message' class='update fade'><p><strong><?php echo __( "Settings Saved" ); ?></strong></p></div>
+	            <?php
+            }
+            else{
+                ?>
+                <br/><div id='message' class='update-nag fade'><p><strong><?php echo __( "FAILED to save settings" ); ?></strong></p></div>
+                <?php
+            }
         }
 
         $this->GetConfiguration();
@@ -427,20 +475,42 @@ class DoubleATwitterFeed{
             <input type="hidden" name="action" value="save_doublea_twitter_feed_configuration" />
             <input type="hidden" id="button_clicked" name="button_clicked" value="false" />
             <input type="hidden" name="last_tweet_id" value="<?php $this->last_tweet_id;?>" />
-            <?php //wp_nonce_field("doublea-save-config");?>
             <fieldset>
                 <div class="main-configuration">
 
                     <hr/>
                     <h2><?php echo __("Twitter keys, required for the plugin to access the feed");?></h2>
+                    <!--Consumer key -->
+                    <?php if(empty($this->consumer_key)){?>
                     <label for="consumer_key"><?php echo __("Consumer key");?></label><br/>
-                    <input type="text" name="consumer_key" id="consumer_key" maxlength="50" size="150" value="<?php echo $this->consumer_key ?>" /><br/>
+                    <input type="text" name="consumer_key" id="consumer_key" maxlength="100" size="150" value="<?php echo $this->consumer_key ?>" /><br/>
+                    <?php } else {?>
+                        <p>Consumer key is encrypted</p>
+                    <?php }?>
+
+                    <!-- Consumer secret -->
+                    <?php if(empty($this->consumer_key)){?>
                     <label for="consumer_secret"><?php echo __("Consumer secret");?></label><br/>
-                    <input type="text" name="consumer_secret" id="consumer_secret" maxlength="50" size="150" value="<?php echo $this->consumer_secret ?>" /><br/>
+                    <input type="text" name="consumer_secret" id="consumer_secret" maxlength="100" size="150" value="<?php echo $this->consumer_secret ?>" /><br/>
+                    <?php } else { ?>
+                    <p>Consumer secret is encrypted</p>
+                    <?php } ?>
+
+                    <!-- Access token -->
+                    <?php if(empty($this->access_token)){?>
                     <label for="access_token"><?php echo __("Access token");?></label><br/>
-                    <input type="text" name="access_token" id="access_token" maxlength="50" size="150" value="<?php echo $this->access_token ?>" /><br/>
+                    <input type="text" name="access_token" id="access_token" maxlength="100" size="150" value="<?php echo $this->access_token ?>" /><br/>
+                    <?php }else{?>
+                    <p>Access token is encrypted</p>
+                    <?php } ?>
+
+                    <!--  Access token secret -->
+                    <?php if(empty($this->access_token_secret)){?>
                     <label for="access_token_secret"><?php echo __("Access token secret");?></label><br/>
-                    <input type="text" name="access_token_secret" id="access_token_secret" maxlength="50" size="150" value="<?php echo $this->access_token_secret ?>" />
+                    <input type="text" name="access_token_secret" id="access_token_secret" maxlength="100" size="150" value="<?php echo $this->access_token_secret ?>" />
+                    <?php } else { ?>
+                    <p>Access token secret is encrypted</p>
+                    <?php } ?>
                     <hr/>
                     <h2><?php echo __("User timeline configuration");?></h2>
                     <label for="screen_name"><?php echo __("Screen name");?></label><br/>
@@ -548,15 +618,16 @@ class DoubleATwitterFeed{
      */
     function SaveConfiguration(){
 
-        if(check_admin_referer("date__and__time_".$_POST["date_time"])) {
+        if(check_admin_referer('date__and__time_'.$_POST['date_time'])) {
 
-	        $this->consumer_key        = $_POST["consumer_key"];
-	        $this->consumer_secret     = $_POST["consumer_secret"];
-	        $this->access_token        = $_POST["access_token"];
-	        $this->access_token_secret = $_POST["access_token_secret"];
-	        $this->screen_name         = $_POST["screen_name"];
-	        $this->feed_count          = $_POST["feed_count"];
-	        $this->feed_update         = $_POST["feed_update"];
+            //Only encrypt if key here
+	        $this->consumer_key        = isset($_POST['consumer_key']) ? $_POST['consumer_key'] : $this->consumer_key;
+	        $this->consumer_secret     = isset($_POST['consumer_secret']) ? $_POST['consumer_secret'] : $this->consumer_secret;
+	        $this->access_token        = isset($_POST['access_token']) ? $_POST['access_token'] : $this->access_token;
+	        $this->access_token_secret = isset($_POST['access_token_secret']) ? $_POST['access_token_secret'] : $this->access_token_secret;
+	        $this->screen_name         = $_POST['screen_name'];
+	        $this->feed_count          = $_POST['feed_count'];
+	        $this->feed_update         = $_POST['feed_update'];
 
 
 	        //Styles
@@ -590,10 +661,15 @@ class DoubleATwitterFeed{
      */
     private function UpdateTimeline(){
 
-        $this->GetConfiguration();
+        try {
+	        $this->GetConfiguration();
 
-        if(1==1 || $this->feed_next_update <= time()){
-            $this->GetTwitterUserTimeline();
+	        if ( 1 == 1 || $this->feed_next_update <= time() ) {
+		        $this->GetTwitterUserTimeline();
+	        }
+        }
+        catch (Exception $ex){
+
         }
     }
 }
